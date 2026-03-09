@@ -32,7 +32,7 @@ Before running this project, make sure you have:
    cd backend
    ./mvnw spring-boot:run
    ```
-   Runs at: http://localhost:8080
+   Runs at: http://localhost:8081
 3. **Run the frontend**
    ```bash
    cd frontend
@@ -42,8 +42,8 @@ Before running this project, make sure you have:
    Runs at: http://localhost:5173
 4. **Connect to MongoDB**
    ```bash 
-   Local: mongodb://localhost:27017/careapp
-   Production: bash SPRING_DATA_MONGODB_URI (MongoDB Atlas)
+   Local: mongodb://localhost:27017/eighty-two
+   Production: export SPRING_DATA_MONGODB_URI=<your_mongodb_uri>  # or MONGODB_URI
    ```
 ---
 
@@ -70,9 +70,9 @@ source ~/.bashrc
 - Send test email: `POST http://localhost:8081/api/mail/test?to=your-email@example.com`
 
 **Frontend .env.example**
-VITE_API_BASE=http://localhost:8081
+VITE_API_BASE_URL=http://localhost:8081
 **.env is ignored in .gitignore and should not be committed**
-**Modify .env locally to point to different backend endpoints*
+**Modify `.env` locally to point to different backend endpoints.**
 
 ---
 ## ☁️ Deployment
