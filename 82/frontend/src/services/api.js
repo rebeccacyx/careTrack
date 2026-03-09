@@ -4,11 +4,23 @@ import axios from "axios";
 // Get API base URL from environment variable or fallback to defaults
 // Priority: VITE_API_BASE_URL > hostname detection > import.meta.env.MODE > default
 const getApiBaseUrl = () => {
+    const isLocalDevHost = typeof window !== 'undefined' &&
+        ['localhost', '127.0.0.1'].includes(window.location.hostname);
+    const forceRemoteApi = import.meta.env.VITE_USE_REMOTE_API === 'true';
+
     // Check for explicit environment variable (highest priority)
     if (import.meta.env.VITE_API_BASE_URL) {
         let url = import.meta.env.VITE_API_BASE_URL.trim();
         // Remove trailing slash if present
         url = url.replace(/\/+$/, '');
+
+        // In local development, default to local backend unless explicitly forced.
+        // This avoids common "Network Error" issues when stale .env points to remote API.
+        if (isLocalDevHost && !forceRemoteApi) {
+            console.warn('⚠️ Running on localhost. Ignoring VITE_API_BASE_URL and using local backend http://localhost:8081/api. Set VITE_USE_REMOTE_API=true to force remote API.');
+            return 'http://localhost:8081/api';
+        }
+
         // Add /api suffix if not already present
         const finalUrl = url.endsWith('/api') ? url : `${url}/api`;
         console.log('🔧 API Base URL from VITE_API_BASE_URL:', finalUrl);
