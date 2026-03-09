@@ -98,17 +98,25 @@ export async function createTask(taskData) {
 }
 
 // Update task
-export async function updateTask(taskData) {
+export async function updateTask(taskIdOrData, taskData) {
     try {
-        // Extract taskId from taskData
-        const taskId = taskData.id;
+        // Backward compatible signatures:
+        // 1) updateTask(taskId, taskData)
+        // 2) updateTask({ id, ...taskData })
+        const isTaskIdSignature = typeof taskIdOrData === 'string';
+        const taskId = isTaskIdSignature ? taskIdOrData : taskIdOrData?.id;
+
         if (!taskId) {
             throw new Error('Task ID is required');
         }
-        
-        // Remove id from taskData before sending (it's in the URL)
-        const { id, ...updateData } = taskData;
-        
+
+        const updateData = isTaskIdSignature
+            ? (taskData || {})
+            : (() => {
+                const { id, ...rest } = taskIdOrData;
+                return rest;
+            })();
+
         const response = await api.put(`/tasks/${taskId}`, updateData);
         const result = response.data;
         
