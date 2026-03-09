@@ -1,0 +1,22 @@
+{
+  "name": "Care Scheduling Backend",
+  "description": "Spring Boot backend for Care Scheduling System",
+  "repository": "https://github.com/Eighty-two-82/Eighty-two.git",
+  "logo": "https://spring.io/img/homepage/icon-spring-boot.svg",
+  "keywords": ["spring", "spring-boot", "mongodb", "java"],
+  "success_url": "/api/auth/login",
+  "env": {
+    "MONGODB_URI": {
+      "description": "MongoDB connection string",
+      "required": true
+    }
+  },
+  "addons": [
+    "mongolab:sandbox"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/java"
+    }
+  ]
+}
